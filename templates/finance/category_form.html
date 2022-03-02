@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Добавление категорий{% endblock title %}
+
+{% block content %} 
+<div class="form-row">
+    <div class="col-md-6"><h4>Категория:</h4></div>
+    <div class="col-md-6"><a class="float-right" href="{% url 'categories' %}">Отмена</a></div>
+</div>
+<form method="POST">
+    {% csrf_token %}
+    {{ form|crispy}}
+    <input class="btn btn-primary" type="submit" value="Сохранить">
+</form>
+
+{% endblock content %}

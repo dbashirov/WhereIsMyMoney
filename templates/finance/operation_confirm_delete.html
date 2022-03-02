@@ -1,0 +1,19 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Удаление операции{% endblock title %}
+
+{% block content %} 
+<div class="form-row">
+    <div class="col-md-6"><h4>Операция:</h4></div>
+    <div class="col-md-6"><a class="float-right" href="{% url 'operations' %}">Отмена</a></div>
+</div>
+<form method="POST">
+    {% csrf_token %}
+    {{ form|crispy}}
+    <p>Вы уверены что хотите удалить операцию "{{ operation }}" от {{ operation.date }}?</p>
+    <input class="btn btn-danger" type="submit" value="Удалить">
+</form>
+
+{% endblock content %}

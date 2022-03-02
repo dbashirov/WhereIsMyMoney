@@ -1,0 +1,61 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Редактирование операций{% endblock title %}
+
+{% block content %}
+<div class="form-row">
+  <div class="col-md-6">
+    <h4>Операция:</h4>
+  </div>
+  <div class="col-md-6"><a class="float-right" href="{% url 'operations' %}">Назад</a></div>
+</div>
+
+<form method="POST">
+  {% csrf_token %}
+  {% load humanize %}
+  <div class="row">
+    <div class="col-6">
+      {{ form.sum|as_crispy_field }}
+    </div>
+    <div class="col-6">
+      {{ form.wallet|as_crispy_field }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      {{ form.type|as_crispy_field }}
+    </div>
+    <div class="col-6">
+      {{ form.category|as_crispy_field }}
+      {{ form.wallet_recipient|as_crispy_field }}
+    </div>
+  </div>
+  {{ form.date|as_crispy_field }}
+  <div id="div_id_description" class="form-group">
+    <label for="id_description" class="">Описание</label>
+    <div class="">
+      <textarea name="description" cols="40" rows="5" class="textarea form-control" id="id_description">{{ operation.description }}</textarea>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-6">
+      <input class="btn btn-primary" type="submit" value="Сохранить">
+    </div>
+    <div class="col-md-6">
+      <a class="btn btn-danger float-right" href="{% url 'operations-delete' operation.id %}">Удалить</a>
+    </div>
+  </div>
+</form>
+
+
+{% endblock content %}
+
+
+{% block footer %}
+
+<script src="{% static 'js/select.js' %}"></script>
+
+{% endblock footer %}

@@ -1,0 +1,35 @@
+{% extends '_base.html' %}
+
+{% block title %}Журная операций{% endblock title %}
+
+{% block content %} 
+    
+    <div class="container">
+        <div class="my-1">
+            <div class="form-row d-flex p-2 align-items-center">
+                <div class="col"><h5>Кошельки:</h5></div>
+                <div class="col">
+                    <a class="btn btn-primary float-right" href="{% url 'wallets-add' %}?next={{request.path}}" role="button">Добавить</a>
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover">
+            {% load humanize %}
+            <thead>
+                <tr>
+                  <th scope="col">Название</th>
+                  <th scope="col">Валюта</th>
+                  <th scope="col">Описание</th>
+                </tr>
+            </thead>
+            {% for wallet in wallets %}
+                <tr>
+                    <td><a href="{% url 'wallets-update' wallet.id %}">{{ wallet.title }}</a></td>
+                    <td>{{ wallet.currency }}</td>
+                    <td>{{ wallet.description }}</td>
+                </tr>
+            {% endfor %} 
+        </table>   
+    </div>
+    
+{% endblock content %}

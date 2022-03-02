@@ -1,0 +1,81 @@
+{% extends '_base.html' %}
+
+{% block title %}Журная операций{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="my-1">
+        <div class="form-row d-flex p-2 align-items-center">
+            <div class="col">
+                <h5>Журнал операций:</h5>
+            </div>
+            <div class="col">
+                <form method='get' action="{% url 'operations' %}">
+                    <input class="form-control" type="search" size="30" name="search_text"
+                        value="{{ request.GET.search_text }}" id="search_text" placeholder="Поиск">
+                </form>
+            </div>
+            <div class="col">
+                <a class="btn btn-primary float-right"
+                    href="{% url 'operations-add' %}?next={% firstof request.path '/' %}" role="button">Добавить</a>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-hover">
+        {% load humanize %}
+        <thead>
+            <tr class="info">
+                <th scope="col">Тип</th>
+                <th scope="col">Кошелек</th>
+                <th scope="col">Сумма</th>
+                <th scope="col">Категория/Кошелек</th>
+                <!-- <th scope="col">Полkьзователь</th> -->
+                <th scope="col">Дата</th>
+                <!-- <th scope="col">Описание</th> -->
+            </tr>
+        </thead>
+        {% for operation in Operations %}
+        <tr>
+            <td><a href="{% url 'operations-update' operation.id %}">{{ operation.type }}</a></td>
+            <td>{{ operation.wallet }}</td>
+            <td align="right">{{ operation.sum }}</td>
+            <td>{{ operation.category|default_if_none:"" }}{{ operation.wallet_recipient|default_if_none:"" }}</td>
+            <!-- <td>{{ operation.user }}</td> -->
+            <td>{{ operation.date }}</td>
+            <!-- <td>{{ operation.description }}</td> -->
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% if is_paginated %}
+    <div class="pagination">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link"
+                    href="?page={{ page_obj.previous_page_number }}{% if request.GET.search_text %}&search_text={{request.GET.search_text}}{%endif%}">Предыдущая</a>
+            </li>
+            {% endif %}
+            {% for num_current_page in page_obj.paginator.page_range %}
+            {% if page_obj.number == num_current_page %}
+            <li class="page-item active"><span class="page-link">{{ num_current_page }}<span
+                        class="sr-only">(current)</span></span></li>
+            {% else %}
+            <li class="page-item"><a class="page-link"
+                    href="?page={{ num_current_page }}{% if request.GET.search_text %}&search_text={{request.GET.search_text}}{%endif%}">{{
+                    num_current_page }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link"
+                    href="?page={{ page_obj.next_page_number }}{% if request.GET.search_text %}&search_text={{request.GET.search_text}}{%endif%}">Следующая</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock content %}
