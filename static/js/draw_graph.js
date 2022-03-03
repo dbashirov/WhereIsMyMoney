@@ -73,7 +73,8 @@ function drawGraphWallet(list_wallets, startDate) {
 
         // Руссифицурем
         // var colors = ['#33CC33', '#FF3333', '#3333CC', '#E80C7A', '#E80C7A'];
-        var colors = ['#33CC33', '#FF6737', '#00BBBB', '#FF3333', '#3333CC', '#E80C7A', '#E80C7A'];
+        // var colors = ['#33CC33', '#FF6737', '#00BBBB', '#FF3333', '#3333CC', '#E80C7A', '#E80C7A'];
+        var colors = ['#00BBBB', '#FF3333', '#3333CC', '#E80C7A', '#E80C7A'];
         translateGraph(Highcharts);
 
         // Рисуем диаграмму
