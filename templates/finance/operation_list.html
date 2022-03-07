@@ -33,7 +33,7 @@
                 <th scope="col">Категория/Кошелек</th>
                 <!-- <th scope="col">Полkьзователь</th> -->
                 <th scope="col">Дата</th>
-                <th scope="col">Описание</th>
+                <!-- <th scope="col">Описание</th> -->
             </tr>
         </thead>
         {% for operation in Operations %}
@@ -44,7 +44,7 @@
             <td>{{ operation.category|default_if_none:"" }}{{ operation.wallet_recipient|default_if_none:"" }}</td>
             <!-- <td>{{ operation.user }}</td> -->
             <td>{{ operation.date }}</td>
-            <td>{{ operation.description }}</td>
+            <!-- <td>{{ operation.description }}</td> -->
         </tr>
         {% endfor %}
     </table>
@@ -63,8 +63,7 @@
                         class="sr-only">(current)</span></span></li>
             {% else %}
             <li class="page-item"><a class="page-link"
-                    href="?page={{ num_current_page }}{% if request.GET.search_text %}&search_text={{request.GET.search_text}}{%endif%}">{{
-                    num_current_page }}</a>
+                    href="?page={{ num_current_page }}{% if request.GET.search_text %}&search_text={{request.GET.search_text}}{%endif%}">{{ num_current_page }}</a>
             </li>
             {% endif %}
             {% endfor %}
