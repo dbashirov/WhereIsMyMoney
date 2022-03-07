@@ -33,7 +33,7 @@
                 <th scope="col">Категория/Кошелек</th>
                 <!-- <th scope="col">Полkьзователь</th> -->
                 <th scope="col">Дата</th>
-                <!-- <th scope="col">Описание</th> -->
+                <th scope="col">Описание</th>
             </tr>
         </thead>
         {% for operation in Operations %}
@@ -44,7 +44,7 @@
             <td>{{ operation.category|default_if_none:"" }}{{ operation.wallet_recipient|default_if_none:"" }}</td>
             <!-- <td>{{ operation.user }}</td> -->
             <td>{{ operation.date }}</td>
-            <!-- <td>{{ operation.description }}</td> -->
+            <td>{{ operation.description }}</td>
         </tr>
         {% endfor %}
     </table>
