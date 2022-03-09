@@ -11,7 +11,7 @@ import json
 import datetime
 
 from .forms import OperationCreateForm
-from .calcOfBalances import calculation_of_balances, expenses_by_category
+from .calcOfBalances import calculation_of_balances, expenses_by_category, incomes_by_category
 from .addFunctions import MonthInWords
 
 from .models import (
@@ -41,19 +41,38 @@ class HomePageView(LoginRequiredMixin, TemplateView):
         context['expense_list'] = json.dumps(rezult['expense_list'])
         context['balance_list'] = json.dumps(rezult['balance_list'])
 
-        # Опредлеям расходы по категориям за препредущий месяц
+        # Название месяцев
+        context['name2PrevMonth'] = json.dumps(MonthInWords(date2PrevMonth))
+        context['namePrevMonth'] = json.dumps(MonthInWords(datePrevMonth))
+
+        # Доходы
+        # Определям доходы по категориям за препредущий месяц
+        incomes2PrevMonth = incomes_by_category(self.request.user, date2PrevMonth)
+        context['showIncomes2PrevMonth'] = len(incomes2PrevMonth) > 0
+        context['incomes2PrevMonth'] = json.dumps(incomes2PrevMonth)
+        
+        # Определям доходы по категориям за предущий месяц
+        incomesOfPrevMonth = incomes_by_category(self.request.user, datePrevMonth)
+        context['showIncomesPrevMonth'] = len(incomesOfPrevMonth) > 0
+        context['incomesPrevMonth'] = json.dumps(incomesOfPrevMonth)
+        
+        # Определям доходы по категориям за текущий месяц
+        incomesOfCurrentMonth = incomes_by_category(self.request.user, today)
+        context['incomesOfCurrentMonth'] = json.dumps(incomesOfCurrentMonth)
+        print(incomesOfCurrentMonth)
+
+        # Расходы
+        # Определям расходы по категориям за препредущий месяц
         expenses2PrevMonth = expenses_by_category(self.request.user, date2PrevMonth)
         context['showExpenses2PrevMonth'] = len(expenses2PrevMonth) > 0
         context['expenses2PrevMonth'] = json.dumps(expenses2PrevMonth)
-        context['name2PrevMonth'] = json.dumps(MonthInWords(date2PrevMonth))
         
-        # Опредлеям расходы по категориям за предущий месяц
+        # Определям расходы по категориям за предущий месяц
         expensesOfPrevMonth = expenses_by_category(self.request.user, datePrevMonth)
         context['showExpensesPrevMonth'] = len(expensesOfPrevMonth) > 0
         context['expensesPrevMonth'] = json.dumps(expensesOfPrevMonth)
-        context['namePrevMonth'] = json.dumps(MonthInWords(datePrevMonth))
 
-        # Опредлеям расходы по категориям за текущий месяц
+        # Определям расходы по категориям за текущий месяц
         expensesOfCurrentMonth = expenses_by_category(self.request.user, today)
         context['expensesOfCurrentMonth'] = json.dumps(expensesOfCurrentMonth)
 

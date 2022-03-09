@@ -27,7 +27,7 @@ function drawMainPie(namePie, expenses, titlePie) {
         tooltip: {
             headerFormat: '',
             pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/>' +
-                'Сумма расходов: <b>{point.y}</b><br/>'
+                'Сумма: <b>{point.y}</b><br/>'
         },
         // colors: colors,
         series: [{

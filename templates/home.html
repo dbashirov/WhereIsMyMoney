@@ -36,28 +36,54 @@
         </div>
         
     </div>
-    <div class="row">
-        {% if showExpenses2PrevMonth %}
-        <div class="col-md">
-            <figure class="highcharts-figure">
-                <div id="expenses2PrevMonth"></div>
-            </figure>
+    <div><h6>Расходы:</h6>
+        <div class="row">
+            {% if showExpenses2PrevMonth %}
+            <div class="col-md">
+                <figure class="highcharts-figure">
+                    <div id="expenses2PrevMonth"></div>
+                </figure>
+            </div>
+            {% endif %}
+            {% if showExpensesPrevMonth %}
+            <div class="col-md">
+                <figure class="highcharts-figure">
+                    <div id="expensesPrevMonth"></div>
+                </figure>
+            </div>
+            {% endif %}
+            <div class="col-md">
+                <figure class="highcharts-figure"></figure>
+                    <div id="expensesOfCurrentMonth"></div>
+                </figure>
+            </div>
         </div>
-        {% endif %}
-        {% if showExpensesPrevMonth %}
-        <div class="col-md">
-            <figure class="highcharts-figure">
-                <div id="expensesPrevMonth"></div>
-            </figure>
-        </div>
-        {% endif %}
-        <div class="col-md">
-            <figure class="highcharts-figure"></figure>
-                <div id="expensesOfCurrentMonth"></div>
-            </figure>
-        </div>
-        
     </div>
+
+    <div><h6>Доходы:</h6>
+        <div class="row">
+            {% if showIncomes2PrevMonth %}
+            <div class="col-md">
+                <figure class="highcharts-figure">
+                    <div id="incomes2PrevMonth"></div>
+                </figure>
+            </div>
+            {% endif %}
+            {% if showIncomesPrevMonth %}
+            <div class="col-md">
+                <figure class="highcharts-figure">
+                    <div id="incomesPrevMonth"></div>
+                </figure>
+            </div>
+            {% endif %}
+            <div class="col-md">
+                <figure class="highcharts-figure"></figure>
+                    <div id="incomesOfCurrentMonth"></div>
+                </figure>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         {% for wallet in wallets %}
             <div class="col-lg-6">
@@ -75,11 +101,20 @@
     var income_list = {{ income_list| safe }};
     var expense_list = {{ expense_list| safe }};
     var balance_list = {{ balance_list| safe }};
+
+    var namePrevMonth = {{ namePrevMonth| safe }};
+    var name2PrevMonth = {{ name2PrevMonth| safe }};
+
+    // Доходы
+    var incomesPrevMonth = {{ incomesPrevMonth| safe }};
+    var incomes2PrevMonth = {{ incomes2PrevMonth| safe }};
+    var incomesOfCurrentMonth = {{ incomesOfCurrentMonth| safe }};
+
+    // Расходы
     var expensesPrevMonth = {{ expensesPrevMonth| safe }};
     var expenses2PrevMonth = {{ expenses2PrevMonth| safe }};
     var expensesOfCurrentMonth = {{ expensesOfCurrentMonth| safe }};
-    var namePrevMonth = {{ namePrevMonth| safe }};
-    var name2PrevMonth = {{ name2PrevMonth| safe }};
+   
 
     income_list = income_list.map(Number);
     expense_list = expense_list.map(Number);
@@ -90,13 +125,22 @@
 
     // Рисуем расходы по категориям и месяцам
     if (expenses2PrevMonth.length > 0) {
-        drawMainPie("expenses2PrevMonth", expenses2PrevMonth, "Расходы за " + name2PrevMonth);
+        drawMainPie("expenses2PrevMonth", expenses2PrevMonth, name2PrevMonth);
     }
     if (expensesPrevMonth.length > 0) {
         drawMainPie("expensesPrevMonth", expensesPrevMonth, namePrevMonth);
     }
     drawMainPie("expensesOfCurrentMonth", expensesOfCurrentMonth, "Текущий месяц");
 
+    // Рисуем доходы по категориям и месяцам
+    if (incomes2PrevMonth.length > 0) {
+        drawMainPie("incomes2PrevMonth", incomes2PrevMonth, name2PrevMonth);
+    }
+    if (incomesPrevMonth.length > 0) {
+        drawMainPie("incomesPrevMonth", incomesPrevMonth, namePrevMonth);
+    }
+    drawMainPie("incomesOfCurrentMonth", incomesOfCurrentMonth, "Текущий месяц");
+    
     // Рисуем графики по каждому кошельку
     var list_wallets = {{ list_wallets| safe }};
     startDate = Date.parse("{{ start_date }}");

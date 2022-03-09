@@ -119,3 +119,23 @@ def expenses_by_category(user, datePrevMonth, Wallet=None):
             expensesByCategory.append({'name': str(category), 'y': str(sum), 'z': random.randrange(50, 150)})
 
     return expensesByCategory
+
+def incomes_by_category(user, datePrevMonth, Wallet=None):
+    
+    incomesByCategory = []
+    categories = Category.objects.filter(user=user, type=typeIncome)
+    print(f'{categories=}')
+
+    for category in categories:
+        result_income = Operation.objects.filter(
+                type=typeIncome,
+                user=user,
+                category=category,
+                date__year=datePrevMonth.year,
+                date__month=datePrevMonth.month
+            ).aggregate(sum=Sum("sum"))
+        sum = result_income['sum'] if result_income['sum'] != None else 0
+        if sum > 0:
+            incomesByCategory.append({'name': str(category), 'y': str(sum), 'z': random.randrange(50, 150)})
+
+    return incomesByCategory
