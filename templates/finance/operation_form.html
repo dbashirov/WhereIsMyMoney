@@ -34,7 +34,11 @@
       {{ form.wallet_recipient|as_crispy_field }}
     </div>
   </div>
-  {{ form.date|as_crispy_field }}
+  <div class="row">
+    <div class="col-6">
+        {{ form.date|as_crispy_field }}
+    </div>
+  </div>
   <div id="div_id_description" class="form-group">
     <label for="id_description" class="">Описание</label>
     <div class="">
@@ -50,13 +54,12 @@
 {% block footer %}
 
 <script src="{% static 'js/select.js' %}"></script>
-
-<!-- <script type="text/javascript"> 
-  window.addEventListener("load", Hide);
-</script> 
-<script type="text/javascript"> 
-  var el = document.getElementById("div_id_Field_A"); 
-  el.addEventListener("click", Hide);
-</script>  -->
+<script>
+  $(function () {
+    $("#id_date").datetimepicker({
+      format: 'd.m.Y H:i',
+    });
+  });
+</script>
 
 {% endblock footer %}

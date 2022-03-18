@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 import json
 import datetime
 
-from .forms import OperationCreateForm
+from .forms import OperationCreateForm, OperationUpdateForm
 from .calcOfBalances import calculation_of_balances, expenses_by_category, incomes_by_category
 from .addFunctions import MonthInWords
 
@@ -150,7 +150,6 @@ class OperationListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         user = self.request.user
         try:
-            # search_text = self.kwargs['search_text']
             search_text = self.request.GET.get('search_text')
         except:
             search_text = ''
@@ -168,8 +167,8 @@ class OperationListView(LoginRequiredMixin, ListView):
 
 class OperationUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Operation
-    fields = ['sum', 'wallet', 'type',
-              'category', 'wallet_recipient', 'date', 'description']
+    form_class = OperationUpdateForm
+    # fields = ['sum', 'wallet', 'type', 'category', 'wallet_recipient', 'date', 'description']
     template_name_suffix = '_update_form'
     success_url = reverse_lazy('operations')
     context_object_name = 'operation'
@@ -293,9 +292,7 @@ class WalletDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 def returnListCategory(request):
 
     if request.method == "POST":
-        
         post_data = json.loads(request.body.decode("utf-8"))
-
         qs = Category.objects.all()
         qs = qs.filter(type=post_data['type'], user=request.user)
         # qs_json = serializers.serialize('json', qs)
@@ -310,17 +307,13 @@ def returnListCategory(request):
 def returnListWallet(request):
 
     if request.method == "POST":
-        
         post_data = json.loads(request.body.decode("utf-8"))
-        # print(f'wallet={post_data}')
-        # print(post_data['wallet']=='')
         qs = Wallet.objects.all()
         if post_data['wallet'] == '':
             qs = qs.filter(user=request.user)
         else:
             qs = qs.filter(user=request.user).exclude(id=post_data['wallet'])
         qs_json = list(qs.values())
-        
     else:
         qs_json = { }
 
