@@ -6,6 +6,10 @@ p.finance {
   margin-bottom: 0;  
 }
 
+.pagination {
+  flex-wrap: wrap;
+ }
+
 #container {
   height: 400px;
 }
