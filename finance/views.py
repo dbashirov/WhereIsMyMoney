@@ -88,7 +88,8 @@ class HomePageView(LoginRequiredMixin, TemplateView):
                 'expense_list': rezult['expense_list'],
                 'balance_list': rezult['balance_list'],
             })
-        
+            
+        context['start_date_1m'] = datePrevMonth.strftime('%Y-%m-%d')
         context['wallets'] = wallets
         context['list_wallets'] = json.dumps(list_wallets)
         
